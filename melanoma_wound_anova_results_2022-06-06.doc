@@ -1,0 +1,6 @@
+              Df    Sum Sq   Mean Sq F value Pr(>F)    
+siRNA          4 1.393e+12 3.484e+11   33.09 <2e-16 ***
+Time_Period    3 3.338e+13 1.113e+13 1056.87 <2e-16 ***
+Residuals   1144 1.204e+13 1.053e+10                   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
