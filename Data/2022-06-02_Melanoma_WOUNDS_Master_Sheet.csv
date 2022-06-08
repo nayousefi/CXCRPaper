@@ -1,4 +1,4 @@
-Cell type,Replicate,siRNA,Treatment,Intersection,HOUR_0 ,HOUR_5,HOUR_8,HOUR_18
+Cell_type,Replicate,siRNA,Treatment,Intersection,HOUR_0 ,HOUR_5,HOUR_8,HOUR_18
 Melanoma,1,Unstransfected,No_SDF1,1,592955,447499,391817,192476
 Melanoma,1,Unstransfected,No_SDF1,2,648826,479365,371440,71604
 Melanoma,1,Unstransfected,No_SDF1,3,560813,399460,333503,61477

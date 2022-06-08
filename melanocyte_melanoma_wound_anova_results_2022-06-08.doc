@@ -1,0 +1,6 @@
+              Df    Sum Sq   Mean Sq F value Pr(>F)    
+Cell_type      1 1.168e+13 1.168e+13   494.5 <2e-16 ***
+Time_Period    3 5.146e+13 1.715e+13   726.5 <2e-16 ***
+Residuals   2299 5.428e+13 2.361e+10                   
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
