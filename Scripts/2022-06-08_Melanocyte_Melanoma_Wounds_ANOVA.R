@@ -34,4 +34,5 @@ melanocyte_melanoma_anova_sum <- summary(melanocyte_melanoma_anova)
 
 capture.output(melanocyte_melanoma_anova_sum, file = "melanocyte_melanoma_wound_anova_results_2022-06-08.doc")
 
-write.csv(here("Data", "melanocyte_melanoma_wounds.csv"))
+melanocyte_melanoma_wounds %>% 
+  write.csv(here("Data", "melanocyte_melanoma_wounds.csv"))
