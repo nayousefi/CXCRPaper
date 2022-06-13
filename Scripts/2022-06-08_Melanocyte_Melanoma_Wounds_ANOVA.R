@@ -24,7 +24,7 @@ melanoma_wound_pivot <- melanoma_wound %>%
                names_to = "Time_Period",
                values_to = "Values")
 
-melanocyte_melanoma_wounds <- full_join(melanocyte_wound_pivot, melanoma_wound_pivot, copy = FALSE)
+melanocyte_melanoma_wounds <- full_join(melanocyte_wound_pivot, melanoma_wound_pivot, copy = FALSE) %>% 
 
 summary(melanocyte_melanoma_wounds)
 
