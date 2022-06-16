@@ -25,7 +25,6 @@ melanoma_wound_pivot <- melanoma_wound %>%
                values_to = "Values")
 
 melanocyte_melanoma_wounds <- full_join(melanocyte_wound_pivot, melanoma_wound_pivot, copy = FALSE) %>% 
-
 summary(melanocyte_melanoma_wounds)
 
 melanocyte_melanoma_anova <- aov(Values ~ Cell_type + Time_Period, data = melanocyte_melanoma_wounds)

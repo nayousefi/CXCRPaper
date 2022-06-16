@@ -32,8 +32,16 @@ wounds1 <- wounds %>%
                         "Unstransfected" = "Normal",
                         "CXCR4_siRNA" = "CXCR4 siRNA",
                         "CXCR7_siRNA" = "CXCR7 siRNA",
-                        "CXCR47_siRNA" = "CXCR4 & 7 siRNA"))
+                        "CXCR47_siRNA" = "CXCR4 & 7 siRNA")) %>% 
+  mutate(Treatment = factor(Treatment,
+                            levels = c("No_SDF1","SDF1"))) 
+
 ### Statistics
+
+table <- table(wounds1$siRNA,wounds1$Treatment)
+
+tibble(table)
+
 #melanoma overall
 melanoma_stats<-wounds1 %>% 
   filter(Cell_type != "Melanocytes") %>% 
@@ -137,5 +145,19 @@ p2 <- wounds1 %>%
            fill = "siRNA")+
   facet_wrap(~Cell_type+Treatment)
 
-p2 + stat_compare_means()
+p2 + stat_compare_means(comparisons = table)
+
+### Comparisons pt2
+
+# Loading data
+
+melanocytes <- read.csv(here("Data", "2022-06-06_Melanocyte_WOUNDS_Master_Sheet.csv"))
+melanoma <- read.csv(here("Data", "2022-06-02_Melanoma_WOUNDS_Master_Sheet.csv"))
+
+wounds2 <- full_join(melanoma, melanocytes, copy = FALSE)
+
+wounds2 <- wounds2 %>% 
+  mutate(Cell_type, X = row_number()) %>% 
+  mutate(HOUR_5,
+         HOUR_5 = replace(HOUR_5, X == 570, 549102.6667))
 
