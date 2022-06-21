@@ -145,7 +145,7 @@ p2 <- wounds1 %>%
            fill = "siRNA")+
   facet_wrap(~Cell_type+Treatment)
 
-p2 + stat_compare_means(comparisons = table)
+p2 + stat_compare_means(method = anova)
 
 ### Comparisons pt2
 
@@ -159,5 +159,70 @@ wounds2 <- full_join(melanoma, melanocytes, copy = FALSE)
 wounds2 <- wounds2 %>% 
   mutate(Cell_type, X = row_number()) %>% 
   mutate(HOUR_5,
-         HOUR_5 = replace(HOUR_5, X == 570, 549102.6667))
+         HOUR_5 = replace(HOUR_5, X == 570, 549102.6667)) 
+
+wounds3 <- wounds2 %>% 
+  group_by(Cell_type) %>% 
+  mutate(HOUR_0A = HOUR_0*1,
+         HOUR_0 = (HOUR_0/HOUR_0),
+         HOUR_5 = (HOUR_5/HOUR_0A),
+         HOUR_8 = (HOUR_8/HOUR_0A),
+         HOUR_18 = (HOUR_18/HOUR_0A)) %>%  
+  pivot_longer(cols = c(6:9),
+               names_to = "Time_Period",
+               values_to = "Values") %>% 
+  mutate(siRNA = factor(siRNA,
+                        levels = c("Unstransfected",
+                                   "Scramble",
+                                   "CXCR4_siRNA",
+                                   "CXCR7_siRNA",
+                                   "CXCR47_siRNA"))) %>% 
+  mutate(siRNA = recode(siRNA,
+                        "Unstransfected" = "Normal",
+                        "CXCR4_siRNA" = "CXCR4 siRNA",
+                        "CXCR7_siRNA" = "CXCR7 siRNA",
+                        "CXCR47_siRNA" = "CXCR4 & 7 siRNA")) %>%
+  mutate(Time_Period = factor(Time_Period,
+                              levels = c("HOUR_0",
+                                         "HOUR_5",
+                                         "HOUR_8",
+                                         "HOUR_18"))) 
+aov_comparisons <- 
+  list(c("Normal","CXCR4 siRNA"),
+       c("Normal","CXCR7 siRNA"),
+       c("Normal","CXCR4 & 7 siRNA"),
+       c("Scramble","Normal"),
+       c("Scramble","CXCR4 siRNA"),
+       c("Scramble","CXCR7 siRNA"),
+       c("Scramble","CXCR4 & 7 siRNA"),
+       c("CXCR4 siRNA","CXCR7 siRNA"),
+       c("CXCR4 siRNA","CXCR4 & 7 siRNA"),
+       c("CXCR7 siRNA","CXCR4 & 7 siRNA"))
+
+melanocytes_1 <- wounds3 %>% 
+  filter(Cell_type != "Melanoma") 
+
+p_melanocytes<-melanocytes_1 %>% 
+  ggboxplot(x = "siRNA", y = "Values", 
+            fill = "siRNA")+
+  facet_wrap(~Treatment+Time_Period, ncol = 4)
+
+p_melanocytes + 
+  stat_compare_means(comparisons = aov_comparisons, label = "p.signif",
+                     hide.ns = TRUE)+
+  stat_compare_means(method = "anova",  
+                        hide.ns = FALSE, label = NULL,
+                        label.x = NULL, label.y = 2.5)
+
+p_melanocytes2 <- melanocytes_1 %>% 
+  ggplot(aes(siRNA, Values, fill = siRNA))+
+  geom_bar(stat = "identity")+
+  facet_wrap(~Treatment+Time_Period, ncol = 4)
+
+p_melanocytes2 + 
+  stat_compare_means(comparisons = aov_comparisons, label = "p.signif",label.y = 60,
+                     hide.ns = TRUE)+
+  stat_compare_means(mapping = NULL, 
+                     hide.ns = TRUE, label = NULL,
+                     label.x = NULL, label.y = 100)
 
